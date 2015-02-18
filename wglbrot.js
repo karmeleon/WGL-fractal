@@ -102,6 +102,8 @@ function handleKeyUp(event) {
 	keysDown[event.keyCode] = false;
 }
 
+var coordinatesChanged = true;
+
 function updateCoordinates() {
 	// first, figure out how much we want to move the camera
 	// using a static value for that would suck at high zoom levels
@@ -121,24 +123,28 @@ function updateCoordinates() {
 		// W, scroll up
 		maxY += step;
 		minY += step;
+		coordinatesChanged = true;
 	}
 
 	if(keysDown[83]) {
 		// S, scroll down
 		maxY -= step;
 		minY -= step;
+		coordinatesChanged = true;
 	}
 
 	if(keysDown[65]) {
 		// A, scroll left
 		maxX -= step;
 		minX -= step;
+		coordinatesChanged = true;
 	}
 
 	if(keysDown[68]) {
 		// D, scroll right
 		maxX += step;
 		minX += step;
+		coordinatesChanged = true;
 	}
 
 	if(keysDown[81]) {
@@ -147,6 +153,7 @@ function updateCoordinates() {
 		minX -= xZoomStep;
 		maxY += yZoomStep;
 		minY -= yZoomStep;
+		coordinatesChanged = true;
 	}
 
 	if(keysDown[69]) {
@@ -155,6 +162,7 @@ function updateCoordinates() {
 		minX += xZoomStep;
 		maxY -= yZoomStep;
 		minY += yZoomStep;
+		coordinatesChanged = true;
 	}
 
 	if(keysDown[82]) {
@@ -164,6 +172,7 @@ function updateCoordinates() {
 		minX = -2.0 * aspectRatio;
 		maxY = 2.0;
 		minY = -2.0;
+		coordinatesChanged = true;
 	}
 
 	updateCoordinateBuffer();
@@ -172,7 +181,9 @@ function updateCoordinates() {
 function tick() {
 	requestAnimFrame(tick);
 	updateCoordinates();
-	drawScene();
+	if(coordinatesChanged)
+		drawScene();
+	coordinatesChanged = false;
 	trackFPS('fps-counter');
 }
 
