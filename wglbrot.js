@@ -71,6 +71,7 @@ function updateCoordinateBuffer() {
 		maxX, minY,
 		maxX, maxY
 	]), gl.DYNAMIC_DRAW);
+	document.getElementById('center').textContent = 'Center at ' + ((minX + maxX) / 2).toFixed(4) + ' + ' + ((minY + maxY) / 2).toFixed(4) + 'i';
 }
 
 function drawScene() {
